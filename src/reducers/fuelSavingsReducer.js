@@ -1,4 +1,4 @@
-import initialState from './initialState';
+import initialState from "./initialState";
 
 // IMPORTANT: Note that with Redux, state should NEVER be changed.
 // State is considered immutable. Instead,

@@ -1,9 +1,9 @@
 /* eslint-disable no-var */
-var rimraf = require('rimraf');
-var chalk = require('chalk');
+var rimraf = require("rimraf");
+var chalk = require("chalk");
 var replace = require("replace");
 var prompt = require("prompt");
-var prompts = require('./setupPrompts');
+var prompts = require("./setupPrompts");
 
 var chalkSuccess = chalk.green;
 var chalkProcessing = chalk.blue;
@@ -11,12 +11,12 @@ var chalkWarn = chalk.red;
 
 /* eslint-disable no-console */
 
-console.log(chalkSuccess('Dependencies installed.'));
+console.log(chalkSuccess("Dependencies installed."));
 
 prompt.start();
 
 console.log(chalkWarn("WARNING:  Preparing to delete local git repository..."));
-prompt.get([{name: 'deleteGit', description: "Delete the git repository?  [Y/n]"}], function(err, result) {
+prompt.get([{ name: "deleteGit", description: "Delete the git repository?  [Y/n]" }], (err, result) => {
   var deleteGit = result.deleteGit.toUpperCase();
 
   if (err) {
@@ -24,85 +24,83 @@ prompt.get([{name: 'deleteGit', description: "Delete the git repository?  [Y/n]"
   }
 
   function updatePackage() {
-    console.log(chalkProcessing('Updating package.json settings:'));
+    console.log(chalkProcessing("Updating package.json settings:"));
 
-    prompt.get(prompts, function(err, result) {
+    prompt.get(prompts, (error, res) => {
       // parse user responses
       // default values provided for fields that will cause npm to complain if left empty
       const responses = [
         {
-          key: 'name',
-          value: result.projectName || 'new-project'
+          key: "name",
+          value: res.projectName || "new-project",
         },
         {
-          key: 'version',
-          value: result.version || '0.1.0'
+          key: "version",
+          value: res.version || "0.1.0",
         },
         {
-          key: 'author',
-          value: result.author
+          key: "author",
+          value: res.author,
         },
         {
-          key: 'license',
-          value: result.license || 'MIT'
+          key: "license",
+          value: res.license || "MIT",
         },
         {
-          key: 'description',
-          value: result.description
+          key: "description",
+          value: res.description,
         },
         // simply use an empty URL here to clear the existing repo URL
         {
-          key: 'url',
-          value: ''
-        }
+          key: "url",
+          value: "",
+        },
       ];
 
       // update package.json with the user's values
-      responses.forEach(res => {
+      responses.forEach((responseResult) => {
         replace({
-          regex: `("${res.key}"): "(.*?)"`,
-          replacement: `$1: "${res.value}"`,
-          paths: ['package.json'],
+          regex: `("${responseResult.key}"): "(.*?)"`,
+          replacement: `$1: "${responseResult.value}"`,
+          paths: ["package.json"],
           recursive: false,
-          silent: true
+          silent: true,
         });
       });
 
       // reset package.json 'keywords' field to empty state
       replace({
         regex: /"keywords": \[[\s\S]+?\]/,
-        replacement: `"keywords": []`,
-        paths: ['package.json'],
+        replacement: "\"keywords\": []",
+        paths: ["package.json"],
         recursive: false,
-        silent: true
+        silent: true,
       });
 
       // remove setup script from package.json
       replace({
         regex: /\s*"setup":.*,/,
         replacement: "",
-        paths: ['package.json'],
+        paths: ["package.json"],
         recursive: false,
-        silent: true
+        silent: true,
       });
 
       // remove all setup scripts from the 'tools' folder
-      console.log(chalkSuccess('\nSetup complete! Cleaning up...\n'));
-      rimraf('./tools/setup', error => {
-        if (error) throw new Error(error);
+      console.log(chalkSuccess("\nSetup complete! Cleaning up...\n"));
+      rimraf("./tools/setup", (setupErr) => {
+        if (error) throw new Error(setupErr);
       });
     });
-
   }
 
   if (deleteGit.match(/^N.*/)) {
     updatePackage();
-  }
-  else {
+  } else {
     // remove the original git repository
-    rimraf('.git', error => {
+    rimraf(".git", (error) => {
       if (error) throw new Error(error);
-      console.log(chalkSuccess('Original Git repository removed.\n'));
+      console.log(chalkSuccess("Original Git repository removed.\n"));
       updatePackage();
     });
   }
