@@ -2,9 +2,25 @@ import webpack from "webpack";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "path";
 
+const resolvePaths = (...args) => {
+  return path.resolve(__dirname, "src", ...args);
+};
+
 export default {
   resolve: {
     extensions: ["*", ".js", ".jsx", ".json"],
+    alias: {
+      actions: resolvePaths("actions"),
+      app: resolvePaths("app"),
+      components: resolvePaths("components"),
+      constants: resolvePaths("constants"),
+      pages: resolvePaths("pages"),
+      reducers: resolvePaths("reducers"),
+      store: resolvePaths("store"),
+      styles: resolvePaths("styles"),
+      types: resolvePaths("types"),
+      config: resolvePaths("utils")
+    }
   },
   devtool: "cheap-module-eval-source-map", // more info:https://webpack.js.org/guides/development/#using-source-maps and https://webpack.js.org/configuration/devtool/
   entry: [

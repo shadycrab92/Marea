@@ -10,6 +10,8 @@
         "react/require-default-props": 0,
         "react/no-unused-prop-types": 0,
         "func-names": 0,
+        "comma-dangle": 0,
+        "arrow-body-style": 0,
         "no-undef": 0,
         "global-require": 0,
         "no-sequences": 0,
@@ -18,5 +20,10 @@
         "quotes": ["error", "double"],
         "array-callback-return": 0,
         "jsx-a11y/anchor-is-valid": 0
+    },
+    "settings": {
+        "import/resolver": {
+            "babel-module": {}
+        }
     }
 }

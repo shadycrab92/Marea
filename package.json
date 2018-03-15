@@ -48,6 +48,7 @@
     "babel-eslint": "7.2.3",
     "babel-jest": "20.0.3",
     "babel-loader": "7.1.1",
+    "eslint-import-resolver-babel-module": "4.0.0-beta.3",
     "babel-plugin-transform-react-constant-elements": "6.23.0",
     "babel-plugin-transform-react-remove-prop-types": "0.4.6",
     "babel-polyfill": "6.23.0",
@@ -139,7 +140,25 @@
         ],
         "plugins": [
           "transform-react-constant-elements",
-          "transform-react-remove-prop-types"
+          "transform-react-remove-prop-types",
+          "module-resolver",
+          {
+            "root": [
+              "./src"
+            ],
+            "alias": {
+              "app": "./src/app",
+              "actions": "./src/actions",
+              "components": "./src/components",
+              "constants": "./src/constants",
+              "pages": "./src/pages",
+              "reducers": "./src/reducers",
+              "store": "./src/store",
+              "styles": "./src/styles",
+              "types": "./src/types",
+              "utils": "./src/utils"
+            }
+          }
         ]
       },
       "test": {
